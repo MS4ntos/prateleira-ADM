@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tela de Login</title>
+  <link rel="stylesheet" href="login.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  
+</head>
+<body>
+
+   <div class="login-container">
+    <h2>Login do Funcionário</h2>
+    <form onsubmit="verificarLogin(event)">
+      <div class="form-group">
+        <label for="funcionario">ID do Funcionário</label>
+        <input type="text" id="funcionario" placeholder="Ex: joao123" required />
+      </div>
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" placeholder="Digite a senha" required />
+      </div>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+ 
+
+<script src="script.js"></script>
+</body>
+</html>
