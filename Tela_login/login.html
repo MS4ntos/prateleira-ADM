@@ -6,17 +6,15 @@
   <title>Tela de Login</title>
   <link rel="stylesheet" href="login.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  
 </head>
 <body>
 
-   <div class="login-container">
-    <h2>Login do Funcionário</h2>
+  <div class="login-container">
+    <h2>Login</h2>
     <form onsubmit="verificarLogin(event)">
       <div class="form-group">
-        <label for="funcionario">ID do Funcionário</label>
-        <input type="text" id="funcionario" placeholder="Ex: joao123" required />
+        <label for="funcionario">ID do Usuário</label>
+        <input type="text" id="funcionario" placeholder="Ex: admin ou joao123" required />
       </div>
       <div class="form-group">
         <label for="senha">Senha</label>
@@ -26,8 +24,6 @@
     </form>
   </div>
 
- 
-
-<script src="script.js"></script>
+  <script src="login.js"></script>
 </body>
 </html>

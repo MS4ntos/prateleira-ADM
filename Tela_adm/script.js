@@ -105,28 +105,16 @@ const app = firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
 
- function verificarLogin(event) {
-      event.preventDefault();
 
-      const usuario = document.getElementById('funcionario').value.trim();
-      const senha = document.getElementById('senha').value.trim();
 
-      // Lista de funcionários válidos
-      const usuarios = {
-        joao123: '1234',
-        maria2024: 'senhaSegura',
-        admin: 'admin123'
-      };
 
-      if (usuarios[usuario] && usuarios[usuario] === senha) {
-        // Redireciona para a tela principal (index.html)
-        window.location.href = 'index.html';
-      } else {
-        alert('ID ou senha incorretos!');
-      }
-    }
 
-     function logout() {
-    // Limpa dados (se tiver) e volta para a tela de login
-    window.location.href = 'login.html';
-  }
+
+
+
+ 
+
+
+
+
+
