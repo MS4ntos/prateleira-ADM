@@ -58,4 +58,4 @@ const firebaseConfig = {
           console.error('Erro ao salvar funcionário:', erro);
         });
     });
-  });
+  })
