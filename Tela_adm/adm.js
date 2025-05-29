@@ -15,74 +15,138 @@
 
   function mostrarTela(id) {
     telas.forEach(t => {
-      document.getElementById(t).style.display = 'none';
+      const elemento = document.getElementById(t);
+      if (elemento) elemento.style.display = 'none';
     });
-    document.getElementById(id).style.display = 'block';
-
-    if (id === 'tela-funcionarios') {
-      renderizarListaFuncionarios();
+  
+    const telaSelecionada = document.getElementById(id);
+    if (telaSelecionada) {
+      telaSelecionada.style.display = 'block';
+  
+      if (id === 'tela-funcionarios') {
+        renderizarListaFuncionarios();
+      }
     }
   }
+
+
+
 
   // FUNÇÃO DE CADASTRO COM FOTO
   document.getElementById('form-cadastro').addEventListener('submit', function (e) {
     e.preventDefault();
-
-    const id = document.getElementById('id-funcionario').value.trim();
-    const senha = document.getElementById('senha').value;
+  
+    const nome = document.getElementById('nome-funcionario').value;
+    const data = document.getElementById('data-cadastro').value;
+    const cargo = document.getElementById('cargo-funcionario').value;
     const fotoInput = document.getElementById('foto-funcionario');
-    const foto = fotoInput.files[0];
-
-    if (!id || !senha || !foto) {
-      alert('Preencha todos os campos.');
+  
+    if (fotoInput.files.length === 0) {
+      alert("Selecione uma foto.");
       return;
     }
-
+  
+    // Converte a imagem para base64
     const reader = new FileReader();
-
     reader.onload = function () {
-      // Adiciona o funcionário com a foto base64
-      listaFuncionarios.push({
-        id,
-        fotoBase64: reader.result
-      });
-
-      // Limpa o formulário
-      document.getElementById('form-cadastro').reset();
-      document.getElementById('preview-foto').style.display = 'none';
-
-      // Mostra tela de funcionários
-      mostrarTela('tela-funcionarios');
+      const fotoBase64 = reader.result;
+  
+      const novoFuncionario = {
+        nome: nome,
+        data: data,
+        cargo: cargo,
+        foto: fotoBase64
+      };
+  
+      // Envia para o Firebase Realtime Database
+      db.ref('funcionarios').push(novoFuncionario)
+        .then(() => {
+          alert('Funcionário cadastrado com sucesso!');
+          document.getElementById('form-cadastro').reset();
+          document.getElementById('preview-foto').style.display = 'none';
+        })
+        .catch((erro) => {
+          console.error('Erro ao cadastrar funcionário:', erro);
+          alert('Erro ao cadastrar funcionário');
+        });
     };
-
-    reader.readAsDataURL(foto);
+  
+    reader.readAsDataURL(fotoInput.files[0]);
   });
 
+
+
+
+
+
   // FUNÇÃO PARA MOSTRAR FUNCIONÁRIOS
-  function renderizarListaFuncionarios() {
-    const ul = document.getElementById('lista-funcionarios');
-    ul.innerHTML = '';
-
-    listaFuncionarios.forEach((f, index) => {
-      const li = document.createElement('li');
-      li.style.marginBottom = '15px';
-      li.style.display = 'flex';
-      li.style.alignItems = 'center';
-      li.style.gap = '10px';
-
+  function renderizarListaFuncionarios(funcionariosFiltrados = null) {
+    const container = document.getElementById('lista-funcionarios');
+    container.innerHTML = '';
+  
+    const lista = funcionariosFiltrados || listaFuncionarios;
+  
+    lista.forEach((f, index) => {
+      const div = document.createElement('div');
+      div.style.display = 'flex';
+      div.style.alignItems = 'center';
+      div.style.justifyContent = 'space-between';
+      div.style.gap = '15px';
+      div.style.border = '1px solid #ddd';
+      div.style.padding = '10px';
+      div.style.borderRadius = '8px';
+  
+      const infoContainer = document.createElement('div');
+      infoContainer.style.display = 'flex';
+      infoContainer.style.alignItems = 'center';
+      infoContainer.style.gap = '15px';
+  
       const img = document.createElement('img');
-      img.src = f.fotoBase64;
-      img.style.maxWidth = '100px';
-      img.style.borderRadius = '8px';
-
-      const span = document.createElement('span');
-      span.textContent = `Funcionário ${index + 1}: ${f.id}`;
-
-      li.appendChild(img);
-      li.appendChild(span);
-      ul.appendChild(li);
+      img.src = f.foto || f.fotoBase64 || '';
+      img.style.width = '60px';
+      img.style.height = '60px';
+      img.style.objectFit = 'cover';
+      img.style.borderRadius = '50%';
+  
+      const texto = document.createElement('div');
+      texto.innerHTML = `
+        <strong>${f.nome || 'Sem Nome'}</strong><br>
+        Cargo: ${f.cargo || 'N/A'}<br>
+        Data de Cadastro: ${f.data || 'N/A'}
+      `;
+  
+      infoContainer.appendChild(img);
+      infoContainer.appendChild(texto);
+  
+      const excluirBtn = document.createElement('button');
+      excluirBtn.innerHTML = '🗑️';
+      excluirBtn.style.cursor = 'pointer';
+      excluirBtn.style.border = 'none';
+      excluirBtn.style.background = 'transparent';
+      excluirBtn.style.fontSize = '20px';
+      excluirBtn.title = 'Excluir Funcionário';
+      excluirBtn.onclick = () => {
+        const indexOriginal = listaFuncionarios.findIndex(func => func === f);
+        if (indexOriginal > -1) {
+          listaFuncionarios.splice(indexOriginal, 1);
+          renderizarListaFuncionarios();
+        }
+      };
+  
+      div.appendChild(infoContainer);
+      div.appendChild(excluirBtn);
+  
+      container.appendChild(div);
     });
   }
+  
+  
+
+
+
+
+
+
 
   // FUNÇÃO PARA PRÉ-VISUALIZAR A FOTO
   function previewFoto() {
@@ -104,25 +168,31 @@
 
 
 
+  listaFuncionarios.forEach((funcionario, index) => {
+    const excluirBtn = document.createElement('button');
+    excluirBtn.innerHTML = '🗑️';
+    excluirBtn.onclick = () => {
+      listaFuncionarios.splice(index, 1);
+      renderizarListaFuncionarios();
+    };
+    // aqui você adicionaria o botão no DOM, por exemplo:
+    algumElemento.appendChild(excluirBtn);
+  });
+  
 
- // bbotao excluir funcionarios
-  const excluirBtn = document.createElement('button');
-excluirBtn.innerHTML = '🗑️';
-excluirBtn.onclick = () => {
-  listaFuncionarios.splice(index, 1);
-  renderizarListaFuncionarios();
-};
 
 
 
 
-function filtrarFuncionarios() {
-  const termo = document.getElementById('busca-funcionario').value.toLowerCase();
-  const filtrados = listaFuncionarios.filter(func =>
-    func.nome.toLowerCase().includes(termo)
-  );
-  renderizarListaFuncionarios(filtrados);
-}
+  function filtrarFuncionarios() {
+    const termo = document.getElementById('busca-funcionario').value.toLowerCase();
+    const filtrados = listaFuncionarios.filter(f =>
+      f.nome.toLowerCase().includes(termo) || f.cargo.toLowerCase().includes(termo)
+    );
+
+    renderizarListaFuncionarios(filtrados);
+  }
+
 
 
 
@@ -148,3 +218,26 @@ function filtrarFuncionarios() {
         btn.classList.add('active');
       });
     });
+
+
+
+
+
+
+
+
+
+
+    function salvarFuncionarioNoFirebase(funcionario) {
+      const db = firebase.database();
+      const ref = db.ref('funcionarios'); // 'funcionarios' será o "nó" no banco
+    
+      // .push() cria um ID único para cada funcionário
+      ref.push(funcionario)
+        .then(() => {
+          console.log('Funcionário salvo com sucesso!');
+        })
+        .catch((erro) => {
+          console.error('Erro ao salvar funcionário:', erro);
+        });
+    }

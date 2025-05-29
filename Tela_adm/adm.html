@@ -78,21 +78,24 @@
         <div id="tela-cadastro" style="display: none;">
           <h2>Cadastrar Novo Funcionário</h2>
           <form id="form-cadastro">
-            <label for="id-funcionario">ID do Funcionário</label><br>
-            <input type="text" id="id-funcionario" required><br><br>
-
-            <label for="senha">Senha</label><br>
-            <input type="password" id="senha" required><br><br>
-
+            <label for="nome-funcionario">Nome do Funcionário</label><br>
+            <input type="text" id="nome-funcionario" required><br><br>
+        
+            <label for="data-cadastro">Data de Cadastro</label><br>
+            <input type="date" id="data-cadastro" required><br><br>
+        
+            <label for="cargo-funcionario">Cargo do Funcionário</label><br>
+            <input type="text" id="cargo-funcionario" required><br><br>
+        
             <label for="foto-funcionario">Foto do Funcionário</label><br>
             <input type="file" id="foto-funcionario" accept="image/*" onchange="previewFoto()" required><br><br>
-
+        
             <img id="preview-foto" style="max-width: 150px; display: none; margin-bottom: 10px;"><br>
-
+        
             <button type="submit">Cadastrar</button>
           </form>
         </div>
-
+        
         <!-- TELA: FUNCIONÁRIOS -->
         <div id="tela-funcionarios" style="display: none;">
           <h2>Funcionários Cadastrados</h2>
@@ -123,6 +126,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
   <script src="script.js"></script>
+  <script src="admfirebase.js"></script>
   <script src="adm.js"></script>
 </body>
 </html>
