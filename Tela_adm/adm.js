@@ -58,8 +58,8 @@
         foto: fotoBase64
       };
   
-      // Envia para o Firebase Realtime Database
-      db.ref('funcionarios').push(novoFuncionario)
+      
+      const db = firebase.database().ref('funcionarios').push(novoFuncionario)
         .then(() => {
           alert('Funcionário cadastrado com sucesso!');
           document.getElementById('form-cadastro').reset();
@@ -71,7 +71,7 @@
         });
     };
   
-    reader.readAsDataURL(fotoInput.files[0]);
+    reader.readAsDataURL(fotoInput.files[0]);//
   });
 
 
@@ -227,17 +227,3 @@
 
 
 
-
-    function salvarFuncionarioNoFirebase(funcionario) {
-      const db = firebase.database();
-      const ref = db.ref('funcionarios'); // 'funcionarios' será o "nó" no banco
-    
-      // .push() cria um ID único para cada funcionário
-      ref.push(funcionario)
-        .then(() => {
-          console.log('Funcionário salvo com sucesso!');
-        })
-        .catch((erro) => {
-          console.error('Erro ao salvar funcionário:', erro);
-        });
-    }
