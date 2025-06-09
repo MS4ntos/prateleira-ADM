@@ -35,7 +35,14 @@ function createShelfCard(shelf) {
                 </div>
                 <div>
                     <span>Em uso:</span>
-                    <span id="peso-atual-${shelf.id}">${pesoAtual} kg</span>
+                   <span id="peso-atual-${shelf.id}">
+  ${
+    pesoAtual < 1
+      ? `${(pesoAtual * 1000).toLocaleString('pt-BR')} g`
+      : `${pesoAtual.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} kg`
+  }
+</span>
+
                 </div>
             </div>
             <div class="progress-bar">
@@ -52,13 +59,26 @@ function createShelfCard(shelf) {
     return card;
 }
 
-function renderShelves() {
-    const container = document.getElementById('shelves-container');
-    container.innerHTML = '';
-    shelves.forEach(shelf => {
-        container.appendChild(createShelfCard(shelf));
-    });
+function renderShelves(corFiltro = 'todas') {
+  const container = document.getElementById('shelves-container');
+  container.innerHTML = '';
+
+  const prateleirasFiltradas = shelves.filter(shelf => {
+    const cor = getProgressBarColor(shelf.porcentagem || 0);
+    return corFiltro === 'todas' || cor === corFiltro;
+  });
+
+  prateleirasFiltradas.forEach(shelf => {
+    container.appendChild(createShelfCard(shelf));
+  });
 }
+
+
+
+function filtrarShelvesPorCor(cor) {
+  renderShelves(cor);
+}
+
 
 function atualizarPesoAtual() {
     const shelvesRef = database.ref("Prateleira");

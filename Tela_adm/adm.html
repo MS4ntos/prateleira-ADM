@@ -49,7 +49,7 @@
 
         <div class="header-menu">
           <label for="">
-            <span class="las la-search"></span>
+        
           </label>
 
           <div class="user" onclick="logout()" role="button" tabindex="0">
@@ -65,12 +65,19 @@
       <div class="page-header">
         <h1>Dashboard</h1>
         <small>Home / Dashboard</small>
+        
       </div>
 
       <div class="page-content">
 
         <!-- TELA: DASHBOARD -->
         <div id="tela-dashboard">
+          <div id="filtros">
+  <button onclick="filtrarShelvesPorCor('todas')">Todas</button>
+  <button onclick="filtrarShelvesPorCor('red')">🔴 Vermelhas</button>
+  <button onclick="filtrarShelvesPorCor('yellow')">🟡 Amarelas</button>
+  <button onclick="filtrarShelvesPorCor('green')">🟢 Verdes</button>
+</div>
           <div id="shelves-container"></div>
         </div>
 
@@ -109,7 +116,7 @@
   style="padding: 8px; width: 100%; max-width: 400px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;"
 >
 <!-- LISTA DE FUNCIONÁRIOS -->
-<div id="lista-funcionarios" style="display: flex; flex-direction: column; gap: 10px;"></div>
+<div id="lista-funcionarios" style="display: flex; flex-direction: column; gap: 10px;" ></div>
       
         </div>
 

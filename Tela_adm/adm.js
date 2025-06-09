@@ -4,7 +4,8 @@ const menuLinks = document.querySelectorAll('.side-menu a');
 const telas = ['tela-dashboard', 'tela-cadastro', 'tela-funcionarios'];
 
 
-let listaFuncionarios = [];
+let listaFuncionarios = carregarFuncionariosDoLocalStorage();
+exibirFuncionariosNaTela(listaFuncionarios);
 
 menuLinks.forEach(link => {
   link.addEventListener('click', function () {
@@ -15,6 +16,9 @@ menuLinks.forEach(link => {
     mostrarTela(tela);
   });
 });
+
+
+
 
 function mostrarTela(id) {
   telas.forEach(t => {
@@ -175,4 +179,82 @@ function salvarFuncionariosNoLocalStorage() {
 function carregarFuncionariosDoLocalStorage() {
   const dados = localStorage.getItem('funcionarios');
   return dados ? JSON.parse(dados) : [];
+}
+
+
+
+
+function adicionarFuncionario(funcionario) {
+  listaFuncionarios.push(funcionario);
+  salvarFuncionariosNoLocalStorage();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const campoBusca = document.getElementById('busca-funcionario');
+
+  campoBusca.addEventListener('input', filtrarFuncionarios);
+
+  carregarFuncionariosDoLocalStorage();
+  exibirFuncionariosNaTela(listaFuncionarios);
+});
+
+
+
+
+function exibirFuncionariosNaTela(funcionarios) {
+  const container = document.getElementById('lista-funcionarios');
+  container.innerHTML = '';
+
+  funcionarios.forEach((func, index) => {
+    const item = document.createElement('div');
+    item.classList.add('card-funcionario');
+
+   renderizarListaFuncionarios(funcionarios);
+    container.appendChild(item);
+  });
+
+  // Adiciona os eventos aos botões de remover
+  const botoesRemover = document.querySelectorAll('.btn-remover');
+  botoesRemover.forEach(botao => {
+    botao.addEventListener('click', () => {
+      const index = botao.getAttribute('data-index');
+      removerFuncionario(index);
+    });
+  });
+}
+
+
+
+
+function removerFuncionario(index) {
+  if (confirm('Tem certeza que deseja remover este funcionário?')) {
+    listaFuncionarios.splice(index, 1); // Remove da lista
+    salvarFuncionariosNoLocalStorage(); // Atualiza o localStorage
+    exibirFuncionariosNaTela(listaFuncionarios); // Atualiza a tela
+  }
+}
+
+
+
+
+function filtrarFuncionarios() {
+  const termo = document.getElementById('busca-funcionario').value.toLowerCase();
+
+  // Se a lista ainda não estiver carregada, não faz nada
+  if (!Array.isArray(listaFuncionarios)) return;
+
+  // Se campo vazio, mostra todos
+  if (termo.trim() === '') {
+    exibirFuncionariosNaTela(listaFuncionarios);
+    return;
+  }
+
+  // Filtro por nome OU cargo
+  const filtrados = listaFuncionarios.filter(func => {
+    const nome = func.nome ? func.nome.toLowerCase() : '';
+    const cargo = func.cargo ? func.cargo.toLowerCase() : '';
+    return nome.includes(termo) || cargo.includes(termo);
+  });
+
+  exibirFuncionariosNaTela(filtrados);
 }
