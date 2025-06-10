@@ -24,9 +24,7 @@ function createShelfCard(shelf) {
     const usagePercentage = shelf.porcentagem || 0;
     const progressBarColor = getProgressBarColor(usagePercentage);
 
-    const barra = document.getElementById('barra');
-  barra.style.width = `${usagePercentage}%`;
-  barra.style.backgroundColor = progressBarColor;
+    
 
     const card = document.createElement('div');
     card.className = 'shelf-card';
