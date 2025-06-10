@@ -78,6 +78,21 @@
   <button onclick="filtrarShelvesPorCor('yellow')">🟡 Amarelas</button>
   <button onclick="filtrarShelvesPorCor('green')">🟢 Verdes</button>
 </div>
+
+
+<div id="ajustar-capacidade" style="margin-bottom: 20px;">
+  <label for="selecionar-prateleira">Selecionar Prateleira:</label>
+  <select id="selecionar-prateleira" style="padding: 5px; margin-right: 10px;"></select>
+
+  <label for="nova-capacidade">Nova Capacidade (kg):</label>
+  <input type="number" id="nova-capacidade" placeholder="Ex: 50" style="width: 80px; padding: 5px; margin-right: 10px;">
+
+  <button onclick="atualizarCapacidade()">Atualizar Capacidade</button>
+</div>
+
+<div id="barra-container" style="width: 100%; background-color: #e0e0e0; height: 20px; border-radius: 10px;">
+  <div id="barra" style="height: 100%; width: 0%; background-color: red; transition: width 0.3s ease;"></div>
+</div>
           <div id="shelves-container"></div>
         </div>
 
